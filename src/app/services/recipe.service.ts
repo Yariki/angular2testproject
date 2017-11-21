@@ -6,8 +6,6 @@ import {ShoppingListService} from './shopping-list.service';
 @Injectable()
 export class RecipeService {
 
-  recipeSelected = new EventEmitter<Recipe>();
-
   private recipes: Recipe[] = [
     new Recipe('Tasty Schnitzel', 'A super-tasty Schnitzel - just awesome!', 'http://kmetro.restaurantden.com/wp-content/uploads/sites/67/2016/03/dish_1.jpg', [
       new Ingredient('Meat', 1),
