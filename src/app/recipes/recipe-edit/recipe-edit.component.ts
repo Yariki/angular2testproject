@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 import {checkEdit} from 'tslint';
-import {FormControl, FormGroup, NgForm} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, NgForm, Validators} from '@angular/forms';
 import {RecipeService} from '../../services/recipe.service';
 
 @Component({
@@ -34,21 +34,46 @@ export class RecipeEditComponent implements OnInit {
     let recipeName = '';
     let recipeImgUrl = '';
     let recipeDescription = '';
+    let recipeIngredients = new FormArray([]);
 
     if ( this.editMode) {
       const recipe = this.recipeService.getRecipe(this.id);
       recipeName = recipe.name;
       recipeImgUrl = recipe.imagePath;
       recipeDescription = recipe.description;
+      if ( recipe['ingredients']) {
+        for ( let ingredient of recipe.ingredients) {
+          recipeIngredients.push(new FormGroup({
+            'name': new FormControl(ingredient.name, Validators.required),
+            'amount' : new FormControl(ingredient.amount, [
+              Validators.required,
+              Validators.pattern(/^[1-9]+[0-9]*$/)
+            ])
+          }));
+        }
+      }
     }
     this.recipeForm = new FormGroup({
-      'name': new FormControl(recipeName),
-      'imagePath' : new FormControl(recipeImgUrl),
-      'description' : new FormControl(recipeDescription)
+      'name': new FormControl(recipeName, Validators.required),
+      'imagePath' : new FormControl(recipeImgUrl, Validators.required),
+      'description' : new FormControl(recipeDescription, Validators.required),
+      'ingredients' : recipeIngredients
     });
 
 
 
+  }
+
+  onAddIngredient() {
+    (<FormArray>this.recipeForm.get('ingredients')).push(
+      new FormGroup({
+        'name': new FormControl(null, Validators.required),
+        'amount': new FormControl(null, [
+          Validators.required,
+          Validators.pattern(/^[1-9]+[0-9]*$/)
+        ])
+      })
+    );
   }
 
   onSubmit() {
