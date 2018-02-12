@@ -2,9 +2,12 @@ import {Recipe} from '../recipes/recipe.model';
 import {EventEmitter, Injectable} from '@angular/core';
 import {Ingredient} from '../shared/ingredient.model';
 import {ShoppingListService} from './shopping-list.service';
+import {Subject} from 'rxjs/Subject';
 
 @Injectable()
 export class RecipeService {
+
+  recipesChanged = new Subject<Recipe[]>();
 
   private recipes: Recipe[] = [
     new Recipe('Tasty Schnitzel', 'A super-tasty Schnitzel - just awesome!', 'http://kmetro.restaurantden.com/wp-content/uploads/sites/67/2016/03/dish_1.jpg', [
@@ -32,5 +35,14 @@ export class RecipeService {
     return this.recipes[id];
   }
 
+  addRecipe(recipe:  Recipe) {
+    this.recipes.push(recipe);
+    this.recipesChanged.next(this.recipes.slice());
+  }
+
+  updateRecipe(index: number, newRecipe: Recipe) {
+    this.recipes[index] = newRecipe;
+    this.recipesChanged.next(this.recipes.slice());
+  }
 
 }
