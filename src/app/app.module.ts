@@ -3,26 +3,16 @@ import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import {HeaderComponent} from './header/header.component';
-import {ShoppingListService} from './services/shopping-list.service';
 import {AppRoutingModule} from './app-routing.module';
-import {RecipeService} from './services/recipe.service';
-import {DataStorageService} from './shared/data-storage.service';
-import { SignupComponent } from './auth/signup/signup.component';
-import { SigninComponent } from './auth/signin/signin.component';
-import {AuthService} from './auth/auth.service';
-import {AuthGuard} from './auth/auth-guard.service';
 import {RecipesModule} from './recipes/recipes.module';
 import {SharedModule} from './shared/shared.module';
 import {ShoppingListModule} from './shopping-list/shopping-list.module';
-import {FormsModule} from '@angular/forms';
+import {AuthModule} from './auth/auth.module';
+import {CoreModule} from './core/core.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HeaderComponent,
-    SignupComponent,
-    SigninComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -30,9 +20,11 @@ import {FormsModule} from '@angular/forms';
     AppRoutingModule,
     RecipesModule,
     SharedModule,
-    ShoppingListModule
+    ShoppingListModule,
+    AuthModule,
+    CoreModule
   ],
-  providers: [ShoppingListService, RecipeService, DataStorageService, AuthService, AuthGuard],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
